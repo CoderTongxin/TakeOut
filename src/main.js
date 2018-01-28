@@ -2,12 +2,15 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue';
 import App from './App';
+import VueResource from 'vue-resource';
 import VueRouter from 'vue-router';
-import Goods from './components/goods/goods';
-import Ratings from './components/ratings/ratings';
-import Vendor from './components/vendor/vendor';
+import Goods from 'components/goods/goods';
+import Ratings from 'components/ratings/ratings';
+import Vendor from 'components/vendor/vendor';
+import 'common/stylus/index.styl';
 
 Vue.use(VueRouter);
+Vue.use(VueResource);
 
 Vue.config.productionTip = false;
 
