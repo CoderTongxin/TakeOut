@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-header></v-header>
+    <v-header :vendor="vendor"></v-header>
     <div class="tab">
       <div class="tab-item border-1px">
         <router-link to='/goods'>商品</router-link>
@@ -24,14 +24,14 @@
     name: 'App',
     data() {
       return {
-       seller: { }
+       vendor: { }
       };
     },
     created() {
       this.$http.get('/api/vendor').then((response) => {
          response = response.body;
         if (response.errno === ERR_OK) {
-          this.seller = response.data;
+          this.vendor = response.data;
         }
       });
     },
