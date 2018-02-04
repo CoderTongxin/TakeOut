@@ -27,8 +27,8 @@
                   <span>好评率{{food.rating}}%</span>
                 </div>
                 <div class="price">
-                  <span>¥{{food.price}}</span>
-                  <span v-show="food.oldPrice">${{food.oldPrice}}</span>
+                  <span class="current-price">¥{{food.price}}</span>
+                  <span v-show="food.oldPrice" class="old-price">${{food.oldPrice}}</span>
                 </div>
               </div>
             </li>
@@ -142,8 +142,20 @@
             font-size 10px
             color rgb(147, 153, 159)
           .desc
-             margin-bottom 8px
+            margin-bottom 8px
           .extra
-             &.count
-               margin-right 12px
+            &.count
+              margin-right 12px
+          .price
+            font-weight 700
+            line-height 24px
+            .current-price
+              margin-right 8px
+              font-size 14px
+              color rgb(240, 20, 20)
+            .old-price
+              text-decoration line-through
+              font-size 10px
+              color rgb(147, 153, 159)
+
 </style>
