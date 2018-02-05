@@ -1,6 +1,6 @@
 <template>
   <div class="goods">
-    <div class="menu-wrapper">
+    <div class="menu-wrapper" ref="menuWrapper">
       <ul>
         <li v-for="(item,index) in goods" :key="index" class="menu-item">
           <span class="text border-1px">
@@ -10,7 +10,7 @@
         </li>
       </ul>
     </div>
-    <div class="food-wrapper">
+    <div class="food-wrapper" ref="foodWrapper">
       <ul>
         <li v-for="(item,index) in goods" :key="index" class="food-list">
           <h1 class="title">{{item.name}}</h1>
@@ -40,6 +40,8 @@
 </template>
 
 <script type='text/ecmascript-6'>
+  import BScroll from 'better-scroll';
+
   const ERR_OK = 0;
   export default {
     name: 'goods',
@@ -59,8 +61,18 @@
         response = response.body;
         if (response.errno === ERR_OK) {
           this.goods = response.data;
+          // vue 在更新DOM时是异步的，在nextTick里才进行DOM的更新
+          this.$nextTick(() => {
+            this._initScroll();
+          });
         }
       });
+    },
+    methods: {
+      _initScroll() {
+        this.menuScroll = new BScroll(this.$refs.menuWrapper, {});
+        this.foodsScroll = new BScroll(this.$refs.foodWrapper, {});
+      }
     }
   };
 </script>
