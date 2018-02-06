@@ -2,7 +2,8 @@
   <div class="goods">
     <div class="menu-wrapper" ref="menuWrapper">
       <ul>
-        <li v-for="(item,index) in goods" :key="index" class="menu-item">
+        <li v-for="(item,index) in goods" :key="index" class="menu-item" :class="{'current':currentIndex===index}"
+            @click="selectMenu(index,$event)">
           <span class="text border-1px"><span v-show="item.type>0" class="icon" :class="classMap[item.type]"></span>
             {{item.name}}
           </span>
@@ -11,7 +12,7 @@
     </div>
     <div class="food-wrapper" ref="foodWrapper">
       <ul>
-        <li v-for="(item,index) in goods" :key="index" class="food-list">
+        <li v-for="(item,index) in goods" :key="index" class="food-list" ref="foodList">
           <h1 class="title">{{item.name}}</h1>
           <ul>
             <li v-for="(food,index) in item.foods" :key="index" class="food-item border-1px">
@@ -49,8 +50,23 @@
     },
     data() {
       return {
-        goods: {}
+        goods: [],
+        listHeight: [],
+        scrollY: 0,
+        selectedFood: {}
       };
+    },
+    computed: {
+      currentIndex() {
+        for (let i = 0; i < this.listHeight.length; i++) {
+          let height1 = this.listHeight[i];
+          let height2 = this.listHeight[i + 1];
+          if (!height2 | this.scrollY >= height1 && this.scrollY < height2) {
+            return i;
+          }
+        }
+        return 0;
+      }
     },
     created() {
       this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
@@ -61,14 +77,44 @@
           // vue 在更新DOM时是异步的，在nextTick里才进行DOM的更新
           this.$nextTick(() => {
             this._initScroll();
+            this._calculateHeight();
           });
         }
       });
     },
     methods: {
+      selectMenu(index, event) {
+        // better_scroll 会派发一个事件，避免和PC的事件重复
+        if (!event._constructed) {
+          return;
+        }
+        let foodList = this.$refs.foodList;
+        let el = foodList[index];
+        this.foodsScroll.scrollToElement(el, 300);
+      },
       _initScroll() {
-        this.menuScroll = new BScroll(this.$refs.menuWrapper, {});
-        this.foodsScroll = new BScroll(this.$refs.foodWrapper, {});
+        this.menuScroll = new BScroll(this.$refs.menuWrapper, {
+          click: true
+        });
+        this.foodsScroll = new BScroll(this.$refs.foodWrapper, {
+          click: true,
+          probeType: 3
+        });
+        this.foodsScroll.on('scroll', (pos) => {
+          if (pos.y <= 0) {
+            this.scrollY = Math.abs(Math.round(pos.y));
+          }
+        });
+      },
+      _calculateHeight() {
+        let foodList = this.$refs.foodList;
+        let height = 0;
+        this.listHeight.push(height);
+        for (let i = 0; i < foodList.length; i++) {
+          let item = foodList[i];
+          height += item.clientHeight;
+          this.listHeight.push(height);
+        }
       }
     }
   };
@@ -93,6 +139,14 @@
         width 56px
         padding: 0 12px
         line-height 14px
+        &.current
+          position relative
+          z-index 10
+          margin-top -1px
+          background #fff
+          font-weight 700
+          .text
+            border-none()
         .icon
           display inline-block
           width 12px
