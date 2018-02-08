@@ -28,19 +28,23 @@
                 <div class="price">
                   <span class="current-price">¥{{food.price}}</span><span v-show="food.oldPrice" class="old-price">${{food.oldPrice}}</span>
                 </div>
+                <div class="cartcontrol-wrapper">
+                  <cartcontrol :food="food"></cartcontrol>
+                </div>
               </div>
             </li>
           </ul>
         </li>
       </ul>
     </div>
-    <shopcart :delivery-price="vendor.deliveryPrice" :min-price="vendor.minPrice"></shopcart>
+    <shopcart :delivery-price="vendor.deliveryPrice" :min-price="vendor.minPrice" :selected-foods="selectedFoods"></shopcart>
   </div>
 </template>
 
 <script type='text/ecmascript-6'>
   import BScroll from 'better-scroll';
   import shopcart from '../shopcart/shopcart';
+  import cartcontrol from '../cartcontrol/cartcontrol';
 
   const ERR_OK = 0;
   export default {
@@ -68,6 +72,17 @@
           }
         }
         return 0;
+      },
+      selectedFoods() {
+        let foods = [];
+        this.goods.forEach((good) => {
+          good.foods.forEach((food) => {
+            if (food.count > 0) {
+              foods.push(food);
+            }
+          });
+        });
+        return foods;
       }
     },
     created() {
@@ -120,7 +135,8 @@
       }
     },
     components: {
-      shopcart
+      shopcart,
+      cartcontrol
     }
   };
 </script>
@@ -227,4 +243,8 @@
               font-size 10px
               color rgb(147, 153, 159)
 
+          .cartcontrol-wrapper
+            position absolute
+            right 0
+            bottom 0
 </style>
