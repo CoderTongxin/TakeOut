@@ -32,6 +32,8 @@
         } else {
           this.food.count++;
         }
+        // 派发一个事件，让组件位置可以被获取
+        this.$emit('add', event.target);
       },
       decreaseFood(event) {
         if (!event._constructed) {
