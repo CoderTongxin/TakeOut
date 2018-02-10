@@ -31,7 +31,7 @@
                     <span class="current-price">¥{{food.price}}</span><span v-show="food.oldPrice" class="old-price">${{food.oldPrice}}</span>
                   </div>
                   <div class="cartcontrol-wrapper">
-                    <cartcontrol :food="food" @add="addFood"></cartcontrol>
+                    <cartcontrol :food="food" @add="addFood"> </cartcontrol>
                   </div>
                 </div>
               </li>
@@ -40,9 +40,9 @@
         </ul>
       </div>
       <shopcart :delivery-price="vendor.deliveryPrice" :min-price="vendor.minPrice" :selected-foods="selectedFoods"
-                ref="shopcart"></shopcart>
+                ref="shopcart"> </shopcart>
     </div>
-    <foodDetail :food="selectedFood" ref="foodDetail"></foodDetail>
+    <foodDetail @add="addFood" :food="selectedFood" ref="foodDetail"> </foodDetail>
   </div>
 </template>
 

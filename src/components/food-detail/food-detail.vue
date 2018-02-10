@@ -17,13 +17,13 @@
           <div class="price">
             <span class="current-price">¥{{food.price}}</span><span v-show="food.oldPrice" class="old-price">${{food.oldPrice}}</span>
           </div>
+          <div class="cartcontrol-wrapper">
+            <cartcontrol :food="food" @add="addFood"></cartcontrol>
+          </div>
+          <transition name="fade">
+            <div class="buy" v-show="!food.count || food.count===0" @click.stop.prevent="addFirstFood">加入购物车</div>
+          </transition>
         </div>
-        <div class="cartcontrol-wrapper">
-          <cartcontrol :food="food" @add="addFood"></cartcontrol>
-        </div>
-        <transition name="fade">
-          <div class="buy" v-show="!food.count || food.count===0" @click="addFirstFood">加入购物车</div>
-        </transition>
       </div>
     </div>
   </transition>
@@ -33,6 +33,7 @@
   import BScroll from 'better-scroll';
   import Vue from 'vue';
   import cartcontrol from 'components/cartcontrol/cartcontrol';
+  import split from 'components/split/split';
 
   export default {
     name: 'food-detail',
@@ -75,7 +76,8 @@
       }
     },
     components: {
-      cartcontrol
+      cartcontrol,
+      split
     }
   };
 </script>
@@ -132,27 +134,27 @@
           color rgb(177, 153, 159)
         .sell-count
           margin-right 12px
-    .cartcontrol-wrapper
-      position absolute
-      right 12px
-      bottom 12px
-    .buy
-      position: absolute
-      right: 18px
-      bottom: 18px
-      z-index: 10
-      height: 24px
-      line-height: 24px
-      padding: 0 12px
-      box-sizing: border-box
-      border-radius: 12px
-      font-size: 10px
-      color: #fff
-      background: rgb(0, 160, 220)
-      opacity: 1
-      &.fade-enter-active, &.fade-leave-active
-        transition: all 0.2s
-      &.fade-enter, &.fade-leave-active
-        opacity: 0
-        z-index: -1
+      .cartcontrol-wrapper
+        position absolute
+        right 12px
+        bottom 12px
+      .buy
+        position: absolute
+        right: 18px
+        bottom: 18px
+        z-index: 10
+        height: 24px
+        line-height: 24px
+        padding: 0 12px
+        box-sizing: border-box
+        border-radius: 12px
+        font-size: 10px
+        color: #fff
+        background: rgb(0, 160, 220)
+        opacity: 1
+        &.fade-enter-active, &.fade-leave-active
+          transition: all 0.2s
+        &.fade-enter, &.fade-leave-active
+          opacity: 0
+          z-index: -1
 </style>
