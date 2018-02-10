@@ -224,7 +224,7 @@
         this.fold = true;
       },
       pay() {
-        if(this.totalPrice<this.minPrice){
+        if (this.totalPrice < this.minPrice) {
           return;
         }
         window.alert(`支付${this.totalPrice}元`);
@@ -384,6 +384,7 @@
             position absolute
             right 0
             bottom 6px
+
   .list-mask
     position: fixed
     top: 0
