@@ -151,7 +151,7 @@
         }
       },
       selectFood(food, event) {
-        if (!event.constructed) {
+        if (!event._constructed) {
           return;
         }
         this.selectedFood = food;
