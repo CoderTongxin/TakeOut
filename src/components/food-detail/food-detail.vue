@@ -32,7 +32,7 @@
         <split></split>
         <div class="rating">
           <h1 class="title">商品评价</h1>
-          <ratingselect :selectType="selectType" :onlyContent="onlyContent" :desc="desc" :ratings="food.ratings"></ratingselect>
+          <ratingselect @select="selectRatingType" @toggle="toggleContent" :selectType="selectType" :onlyShowContent="onlyShowContent" :desc="desc" :ratings="food.ratings"></ratingselect>
         </div>
       </div>
     </div>
@@ -61,7 +61,7 @@
       return {
         showDetail: false,
         selectType: ALL,
-        onlyContent: true,
+        onlyShowContent: true,
         desc: {
           all: '全部',
           positive: '推荐',
@@ -73,7 +73,7 @@
       show() {
         this.showDetail = true;
         this.selectType = ALL;
-        this.onlyContent = true;
+        this.onlyShowContent = true;
         this.$nextTick(() => {
           if (!this.scroll) {
             this.scroll = new BScroll(this.$refs.foodDetail, {
@@ -97,6 +97,18 @@
       },
       addFood(target) {
         this.$emit('add', target);
+      },
+      selectRatingType(type) {
+        this.selectType = type;
+        this.$nextTick(() => {
+          this.scroll.refresh();
+        });
+      },
+      toggleContent() {
+        this.onlyContent = !this.onlyContent;
+        this.$nextTick(() => {
+          this.scroll.refresh();
+        });
       }
     },
     components: {
