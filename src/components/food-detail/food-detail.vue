@@ -44,7 +44,9 @@
                 </div>
                 <div class="time">{{rating.rateTime | formatDate}}</div>
                 <p class="text">
-                  <span :class="{'icon-thumb_up':rating.rateType===0,'icon-thumb_down':rating.rateType===1}"></span>{{rating.text}}
+                  <span :class="{'icon-thumb_up':rating.rateType===0,'icon-thumb_down':rating.rateType===1}"></span>
+                  <span v-show="rating.text.length>0">{{rating.text}}</span>
+                  <span v-show="rating.text.length===0">暂无评论</span>
                 </p>
               </li>
             </ul>
