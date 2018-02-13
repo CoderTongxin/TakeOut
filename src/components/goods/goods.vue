@@ -183,7 +183,7 @@
         display table
         height 54px
         width 56px
-        padding: 0 12px
+        padding 0 12px
         line-height 14px
         &.current
           position relative
