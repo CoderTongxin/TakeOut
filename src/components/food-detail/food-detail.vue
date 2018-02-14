@@ -32,7 +32,7 @@
         <split></split>
         <div class="rating">
           <h1 class="title">商品评价</h1>
-          <ratingselect @select="selectRatingType" @toggle="toggleContent" :selectType="selectType"
+          <ratingselect @select="selectRatingType" @toggle="toggleContent" :selectType="selectedType"
                         :onlyShowContent="onlyShowContent" :desc="desc" :ratings="food.ratings"></ratingselect>
           <div class="ratings-wrapper">
             <ul v-show="food.ratings && food.ratings.length">
@@ -46,7 +46,7 @@
                 <p class="text">
                   <span :class="{'icon-thumb_up':rating.rateType===0,'icon-thumb_down':rating.rateType===1}"></span>
                   <span v-show="rating.text.length>0">{{rating.text}}</span>
-                  <span v-show="rating.text.length===0">暂无评论</span>
+                  <span v-show="rating.text.length===0">默认评论</span>
                 </p>
               </li>
             </ul>
