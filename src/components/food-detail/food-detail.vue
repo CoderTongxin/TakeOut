@@ -79,7 +79,7 @@
     data() {
       return {
         showDetail: false,
-        selectType: ALL,
+        selectedType: ALL,
         onlyShowContent: true,
         desc: {
           all: '全部',
@@ -91,7 +91,7 @@
     methods: {
       show() {
         this.showDetail = true;
-        this.selectType = ALL;
+        this.selectedType = ALL;
         this.onlyShowContent = true;
         this.$nextTick(() => {
           if (!this.scroll) {
@@ -118,7 +118,7 @@
         this.$emit('add', target);
       },
       selectRatingType(type) {
-        this.selectType = type;
+        this.selectedType = type;
         this.$nextTick(() => {
           this.scroll.refresh();
         });
@@ -133,10 +133,10 @@
         if (this.onlyShowContent && !text) {
           return false;
         }
-        if (this.selectType === ALL) {
+        if (this.selectedType === ALL) {
           return true;
         } else {
-          return type === this.selectType;
+          return type === this.selectedType;
         }
       }
     },

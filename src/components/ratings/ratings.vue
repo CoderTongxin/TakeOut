@@ -25,10 +25,11 @@
         </div>
       </div>
       <split></split>
-      <ratingselect :selectType="selectType" :onlyShowContent="onlyShowContent" :ratings="ratings"></ratingselect>
+      <ratingselect @select="selectRatingType" @toggle="toggleContent"
+                    :selectType="selectedType" :onlyShowContent="onlyShowContent" :ratings="ratings"></ratingselect>
       <div class="rating-wrapper">
         <ul>
-          <li v-for="(rating,index) in ratings" class="rating-item" :key="index">
+          <li v-for="(rating,index) in ratings" class="rating-item" v-show="needShow(rating.rateType, rating.text)" :key="index">
             <div class="avatar">
               <img width="28px" height="28px" :src="rating.avatar"/>
             </div>
@@ -38,10 +39,11 @@
                 <star :size="24" :score="rating.score"></star>
                 <span class="delivery-time" v-show="rating.deliveryTime">{{rating.deliveryTime}}</span>
               </div>
-              <p class="text"></p>
+              <p class="text" v-show="rating.text.length>0">{{rating.text}}</p>
+              <p class="text" v-show="!rating.text.length>0">默认评论</p>
               <div v-show="rating.recommend && rating.recommend.length" class="recommend">
                 <span class="icon-thumb_up"></span>
-                <span v-for="(item,index) in rating.recommend" :key="index">{{item}}</span>
+                <span v-for="(item,index) in rating.recommend" :key="index" class="item">{{item}}</span>
               </div>
               <div class="time">
                 {{rating.rateTime | formatDate}}
@@ -74,7 +76,7 @@
     data() {
       return {
         ratings: [],
-        selectType: ALL,
+        selectedType: ALL,
         onlyShowContent: true
       };
     },
@@ -93,6 +95,30 @@
           }
         });
       });
+    },
+    methods: {
+      needShow(type, text) {
+        if (this.onlyContent && !text) {
+          return false;
+        }
+        if (this.selectedType === ALL) {
+          return true;
+        } else {
+          return type === this.selectedType;
+        }
+      },
+      selectRatingType(type) {
+        this.selectedType = type;
+        this.$nextTick(() => {
+          this.scroll.refresh();
+        });
+      },
+      toggleContent() {
+        this.onlyContent = !this.onlyContent;
+        this.$nextTick(() => {
+          this.scroll.refresh();
+        });
+      }
     },
     filters: {
       formatDate(time) {
@@ -210,4 +236,31 @@
               line-height 12px
               font-size 10px
               color rgb(147, 153, 159)
+          .text
+            margin-bottom 8px
+            line-height 18px
+            color rgb(7, 17, 27)
+            font-size 12px
+          .recommend
+            line-height 16px
+            font-size 0
+            .icon-thumb_up, .item
+              display inline-block
+              margin 0 8px 4px 0
+              font-size 9px
+            .icon-thumb_up
+              color rgb(0, 160, 220)
+            .item
+              padding 0 6px
+              border 1px solid rgba(7, 17, 27, 0.1)
+              border-radius 1px
+              color rgb(147, 153, 159)
+              background #fff
+          .time
+            position: absolute
+            top: 0
+            right: 0
+            line-height: 12px
+            font-size: 10px
+            color: rgb(147, 153, 159)
 </style>
