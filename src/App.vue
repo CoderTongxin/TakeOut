@@ -17,21 +17,30 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import { urlParse } from 'common/js/util';
   import Header from './components/header/header';
   const ERR_OK = 0;
+  const debug = process.env.NODE_ENV !== 'production';
 
   export default {
     name: 'App',
     data() {
       return {
-       vendor: { }
+        vendor: {
+          id: (() => {
+            let queryParam = urlParse();
+            return queryParam.id;
+          })()
+        }
       };
     },
     created() {
-      this.$http.get('/api/vendor').then((response) => {
-         response = response.body;
+      const url = debug ? '/api/seller' : 'http://ustbhuangyi.com/sell/api/seller';
+      this.$http.get(url + '?id=' + this.vendor.id).then((response) => {
+        response = response.body;
         if (response.errno === ERR_OK) {
-          this.vendor = response.data;
+          // 直接赋值通过urlParse得到的id会被丢弃，assign相当于extend
+          this.vendor = Object.assign({}, this.vendor, response.data);
         }
       });
     },
