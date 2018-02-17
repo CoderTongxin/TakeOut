@@ -12,7 +12,9 @@
         <router-link to='/vendor'>商家</router-link>
       </div>
     </div>
-    <router-view :vendor="vendor"></router-view>
+    <keep-alive>
+      <router-view :vendor="vendor"></router-view>
+    </keep-alive>
   </div>
 </template>
 
@@ -35,7 +37,7 @@
       };
     },
     created() {
-      const url = debug ? '/api/seller' : 'http://ustbhuangyi.com/sell/api/seller';
+      const url = debug ? '/api/vendor' : 'http://ustbhuangyi.com/sell/api/vendor';
       this.$http.get(url + '?id=' + this.vendor.id).then((response) => {
         response = response.body;
         if (response.errno === ERR_OK) {
